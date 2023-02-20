@@ -103,14 +103,35 @@ fn build_with_cmake(src_path: &str) {
         Platform::Web => {
             // warning checks
             if cfg!(windows) {
-                let emcmake_var = env::var("EMCMAKE");
-                if let Ok(emcmake_value) = emcmake_var {
-                    if !emcmake_value.ends_with(".bat") {
-                        println!("\n-- WARNING --\n Are you certain that the environmental variable EMCMAKE=\"{}\" shouldn't end in .bat?\n-- END WARNING --\n", emcmake_value);
+                fn warn_bat(env_var: &str, good_value: &str) {
+                    let v = env::var(env_var);
+                    if let Ok(value) = v {
+                        if !value.ends_with(".bat") {
+                            println!("\n-- WARNING --\n Are you certain that the environmental variable {}=\"{}\" shouldn't end in .bat?\n-- END WARNING --\n", env_var, value);
+                        }
+                    }
+                    else {
+                        println!("\n-- WARNING --\n Not specifying {}.bat may lead to cmake-rs being unable to recognise {}.bat is to be executed\n-- END WARNING --\n", good_value, good_value);
                     }
                 }
-                else {
-                    println!("\n-- WARNING --\n Not specifying emcmake.bat may lead to cmake-rs being unable to recognise emcmake.bat is to be executed\n-- END WARNING --\n");
+                // cmake-rs doesn't recognise `emcmake` but recognises `emcmake.bat` on windows
+                // Rust's std::process::Command does not automatically convert `emcmake` to `emcmake.bat`
+                warn_bat("EMCMAKE", "emcmake");
+                warn_bat("EMMAKE", "emmake");
+                // specify emcc and em++ compilers (convenience for basic setup)
+                // this can be stopped by setting NO_AUTO_COMPILER_SPEC environmental variable to anything
+                let no_compiler_spec = env::var("NO_AUTO_COMPILER_SPEC");
+                if no_compiler_spec.is_err() {
+                    println!("Not specifying `NO_AUTO_COMPILER_SPEC` automatically means you confirm that emcc and em++ are the C and CXX compilers used by cmake");
+                    conf.define("CMAKE_C_COMPILER", "emcc");
+                    conf.define("CMAKE_CXX_COMPILER", "em++");
+                    // to be fixed (find a working solution)
+                    conf.define("CMAKE_C_COMPILER_WORKS", "TRUE");
+                    conf.define("CMAKE_CXX_COMPILER_WORKS", "TRUE");
+                    // conf.build_target("all");
+                    conf.always_configure(true);
+                    conf.cflag("-w");
+                    // conf.define("CMAKE_TRY_COMPILE_TARGET_TYPE", "STATIC_LIBRARY");
                 }
             }
             conf.define("PLATFORM", "Web")
@@ -118,7 +139,6 @@ fn build_with_cmake(src_path: &str) {
         Platform::RPI => conf.define("PLATFORM", "Raspberry Pi"),
     };
     let dst = conf.build();
-    panic!("frick");
     let dst_lib = join_cmake_lib_directory(dst);
     // on windows copy the static library to the proper file name
     if platform_os == PlatformOS::Windows {
@@ -143,8 +163,14 @@ fn build_with_cmake(src_path: &str) {
         }
     } // on web copy libraylib.bc to libraylib.a
     if platform == Platform::Web {
-        std::fs::copy(dst_lib.join("libraylib.bc"), dst_lib.join("libraylib.a"))
-            .expect("failed to create wasm library");
+        if cfg!(windows) {
+            std::fs::copy(dst_lib.join("raylib.a"), dst_lib.join("libraylib.a"))
+                .expect("failed to create wasm library");
+        }
+        else {
+            std::fs::copy(dst_lib.join("libraylib.bc"), dst_lib.join("libraylib.a"))
+                .expect("failed to create wasm library");
+        }
     }
     // println!("cmake build {}", c.display());
     println!("cargo:rustc-link-search=native={}", dst_lib.display());
@@ -191,7 +217,7 @@ fn gen_rgui() {
     #[cfg(target_os = "windows")]
     {
         cc::Build::new()
-            .file("rgui_wrapper.cpp")
+            .file("rgui_wrapper_win.c")
             .include(".")
             .warnings(false)
             // .flag("-std=c99")
@@ -268,7 +294,6 @@ fn main() {
     // Donwload raylib source
     let src = cp_raylib();
     build_with_cmake(&src);
-    panic!("raylib copied");
 
     gen_bindings();
 
@@ -321,7 +346,7 @@ fn platform_from_target(target: &str) -> (Platform, PlatformOS) {
     let platform = if target.contains("wasm32") {
         // make sure cmake knows that it should bundle glfw in
         // Cargo web takes care of this but better safe than sorry
-        env::set_var("EMMAKEN_CFLAGS", "-s USE_GLFW=3");
+        env::set_var("EMCC_CFLAGS", "-s USE_GLFW=3");
         Platform::Web
     } else if target.contains("armv7-unknown-linux") {
         Platform::RPI
