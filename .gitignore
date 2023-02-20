@@ -9,3 +9,10 @@ raylib-test/storage.data
 samples/savegame
 showcase/*.png
 showcase/*.raw
+**/*.cmake
+**/CMakeCache.txt
+**/CMakeFiles
+**/Makefile
+**/*.pc
+**/libraylib.a
+raylib/include

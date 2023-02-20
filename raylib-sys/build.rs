@@ -105,6 +105,7 @@ fn build_with_cmake(src_path: &str) {
     };
 
     let dst = conf.build();
+    panic!("frick");
     let dst_lib = join_cmake_lib_directory(dst);
     // on windows copy the static library to the proper file name
     if platform_os == PlatformOS::Windows {
@@ -254,6 +255,7 @@ fn main() {
     // Donwload raylib source
     let src = cp_raylib();
     build_with_cmake(&src);
+    panic!("raylib copied");
 
     gen_bindings();
 
