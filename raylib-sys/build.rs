@@ -100,10 +100,23 @@ fn build_with_cmake(src_path: &str) {
 
     match platform {
         Platform::Desktop => conf.define("PLATFORM", "Desktop"),
-        Platform::Web => conf.define("PLATFORM", "Web"),
+        Platform::Web => {
+            // warning checks
+            if cfg!(windows) {
+                let emcmake_var = env::var("EMCMAKE");
+                if let Ok(emcmake_value) = emcmake_var {
+                    if !emcmake_value.ends_with(".bat") {
+                        println!("\n-- WARNING --\n Are you certain that the environmental variable EMCMAKE=\"{}\" shouldn't end in .bat?\n-- END WARNING --\n", emcmake_value);
+                    }
+                }
+                else {
+                    println!("\n-- WARNING --\n Not specifying emcmake.bat may lead to cmake-rs being unable to recognise emcmake.bat is to be executed\n-- END WARNING --\n");
+                }
+            }
+            conf.define("PLATFORM", "Web")
+        },
         Platform::RPI => conf.define("PLATFORM", "Raspberry Pi"),
     };
-
     let dst = conf.build();
     panic!("frick");
     let dst_lib = join_cmake_lib_directory(dst);
