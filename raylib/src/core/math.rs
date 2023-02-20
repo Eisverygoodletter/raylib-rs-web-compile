@@ -19,10 +19,10 @@ use crate::misc::AsF32;
 use std::f32::consts::PI;
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 
-#[cfg(feature = "with_serde")]
-use serde::{Deserialize, Serialize};
 #[cfg(feature = "nalgebra_interop")]
 use nalgebra as na;
+#[cfg(feature = "with_serde")]
+use serde::{Deserialize, Serialize};
 
 make_rslice!(RSliceVec4, Vector4, ffi::MemFree);
 
@@ -39,7 +39,7 @@ macro_rules! optional_serde_struct {
                 $def
             }
         }
-    }
+    };
 }
 
 optional_serde_struct! {
@@ -52,20 +52,14 @@ optional_serde_struct! {
 #[cfg(feature = "nalgebra_interop")]
 impl From<na::Vector2<f32>> for Vector2 {
     fn from(v: na::Vector2<f32>) -> Vector2 {
-        Vector2 {
-            x: v.x,
-            y: v.y
-        }
+        Vector2 { x: v.x, y: v.y }
     }
 }
 
 #[cfg(feature = "nalgebra_interop")]
 impl From<na::base::coordinates::XY<f32>> for Vector2 {
     fn from(v: na::base::coordinates::XY<f32>) -> Vector2 {
-        Vector2 {
-            x: v.x,
-            y: v.y
-        }
+        Vector2 { x: v.x, y: v.y }
     }
 }
 
@@ -159,7 +153,7 @@ impl Vector2 {
 
     /// Constant `Vector2` with both components set to one.
     const ONE: Vector2 = Vector2 { x: 1.0, y: 1.0 };
-    
+
     /// Returns a new `Vector2` with specified components.
     pub const fn new(x: f32, y: f32) -> Vector2 {
         Vector2 { x, y }
@@ -406,7 +400,7 @@ impl From<na::Vector3<f32>> for Vector3 {
         Vector3 {
             x: v.x,
             y: v.y,
-            z: v.z
+            z: v.z,
         }
     }
 }
@@ -417,7 +411,7 @@ impl From<na::base::coordinates::XYZ<f32>> for Vector3 {
         Vector3 {
             x: v.x,
             y: v.y,
-            z: v.z
+            z: v.z,
         }
     }
 }
@@ -897,7 +891,7 @@ impl From<na::Vector4<f32>> for Vector4 {
             x: v.x,
             y: v.y,
             z: v.z,
-            w: v.w
+            w: v.w,
         }
     }
 }
@@ -909,7 +903,7 @@ impl From<na::base::coordinates::XYZW<f32>> for Vector4 {
             x: v.x,
             y: v.y,
             z: v.z,
-            w: v.w
+            w: v.w,
         }
     }
 }
@@ -1288,7 +1282,7 @@ impl From<na::geometry::Quaternion<f32>> for Quaternion {
             x: q.coords.x,
             y: q.coords.y,
             z: q.coords.z,
-            w: q.coords.w
+            w: q.coords.w,
         }
     }
 }

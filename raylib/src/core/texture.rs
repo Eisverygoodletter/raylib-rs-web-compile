@@ -692,16 +692,18 @@ impl Image {
         }
         Ok(Image(i))
     }
-    
+
     /// Loads image from a given memory buffer as a vector of arrays
-    pub fn load_image_from_mem(filetype: &str, bytes: &Vec<u8>, size: i32) -> Result<Image, String> {
+    pub fn load_image_from_mem(
+        filetype: &str,
+        bytes: &Vec<u8>,
+        size: i32,
+    ) -> Result<Image, String> {
         let c_filetype = CString::new(filetype).unwrap();
         let c_bytes = bytes.as_ptr();
         let i = unsafe { ffi::LoadImageFromMemory(c_filetype.as_ptr(), c_bytes, size) };
         if i.data.is_null() {
-            return Err(format!(
-            "Image data is null. Check provided buffer data"
-            ))
+            return Err(format!("Image data is null. Check provided buffer data"));
         };
         Ok(Image(i))
     }

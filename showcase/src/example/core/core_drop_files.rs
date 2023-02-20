@@ -13,27 +13,23 @@
 
 use raylib::prelude::*;
 
-pub fn run(rl
-           : &mut RaylibHandle, thread
-           : &RaylibThread)
-    ->crate::SampleOut
-{
+pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut {
     // Initialization
     //--------------------------------------------------------------------------------------
-    let screen_width= 800;
+    let screen_width = 800;
     let screen_height = 450;
 
     rl.set_window_size(screen_width, screen_height);
     rl.set_window_title(thread, "raylib [core] example - drop files");
 
-
     let mut dropped_files = Vec::new();
 
     rl.set_target_fps(60); // Set our game to run at 60 frames-per-second
-    //--------------------------------------------------------------------------------------
+                           //--------------------------------------------------------------------------------------
 
     // Main game loop
-    return Box::new(move |rl: &mut RaylibHandle, thread: &RaylibThread| -> () // Detect window close button or ESC key
+    return Box::new(
+        move |rl: &mut RaylibHandle, thread: &RaylibThread| -> () // Detect window close button or ESC key
     {
         // Update
         //----------------------------------------------------------------------------------
@@ -80,6 +76,6 @@ pub fn run(rl
         if rl.is_key_down(crate::EXIT_KEY) {
             rl.clear_dropped_files();
         }
-    });
-
+    },
+    );
 }

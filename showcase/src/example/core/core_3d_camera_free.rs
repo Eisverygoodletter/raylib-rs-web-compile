@@ -75,6 +75,6 @@ pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut {
         d.draw_text("- Z to zoom to (0, 0, 0)", 40, 120, 10, Color::DARKGRAY);
 
         //----------------------------------------------------------------------------------
-    }
+    },
     );
 }

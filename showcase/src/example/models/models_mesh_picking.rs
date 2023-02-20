@@ -13,8 +13,7 @@
 
 pub use raylib::prelude::*;
 
-pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut
-{
+pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut {
     // Initialization
     //--------------------------------------------------------------------------------------
     let screen_width = 800;
@@ -25,36 +24,46 @@ pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut
 
     // Define the camera to look into our 3d world
     let mut camera = Camera3D::perspective(
-     rvec3( 20.0, 20.0,20.0 ), // Camera position
-     rvec3( 0.0, 8.0,0.0 ),      // Camera looking at point
-    rvec3( 0.0, 1.6,0.0 ),          // Camera up vector (rotation towards target)
-     45.0,                                // Camera field-of-view Y
+        rvec3(20.0, 20.0, 20.0), // Camera position
+        rvec3(0.0, 8.0, 0.0),    // Camera looking at point
+        rvec3(0.0, 1.6, 0.0),    // Camera up vector (rotation towards target)
+        45.0,                    // Camera field-of-view Y
     );
 
-    let mut ray = Ray::default();        // Picking ray
+    let mut ray = Ray::default(); // Picking ray
 
-   let mut tower  = rl.load_model(thread, "original/model/resources/models/turret.obj").unwrap();                 // Load OBJ model
-    let texture = rl.load_texture(thread, "original/models/resources/models/turret_diffuse.png").unwrap(); // Load model texture
-    tower.materials_mut()[0].maps_mut()[raylib::consts::MaterialMapIndex::MATERIAL_MAP_ALBEDO as usize].texture = *texture.as_ref();                 // Set model diffuse texture
+    let mut tower = rl
+        .load_model(thread, "original/model/resources/models/turret.obj")
+        .unwrap(); // Load OBJ model
+    let texture = rl
+        .load_texture(
+            thread,
+            "original/models/resources/models/turret_diffuse.png",
+        )
+        .unwrap(); // Load model texture
+    tower.materials_mut()[0].maps_mut()
+        [raylib::consts::MaterialMapIndex::MATERIAL_MAP_ALBEDO as usize]
+        .texture = *texture.as_ref(); // Set model diffuse texture
 
-    let  towerPos = rvec3( 0.0, 0.0, 0.0 );                    // Set model position
-    let  towerBBox = tower.meshes_mut()[0].mesh_bounding_box();   // Get mesh bounding box
+    let towerPos = rvec3(0.0, 0.0, 0.0); // Set model position
+    let towerBBox = tower.meshes_mut()[0].mesh_bounding_box(); // Get mesh bounding box
     let mut hitMeshBBox = false;
     let mut hitTriangle = false;
 
     // Test triangle
-    let ta = rvec3( -25.0, 0.5,0.0 );
-    let tb = rvec3( -4.0, 2.5,1.0 );
-    let tc = rvec3( -8.0, 6.5,0.0 );
+    let ta = rvec3(-25.0, 0.5, 0.0);
+    let tb = rvec3(-4.0, 2.5, 1.0);
+    let tc = rvec3(-8.0, 6.5, 0.0);
 
-    let mut bary = rvec3( 0.0, 0.0, 0.0 );
+    let mut bary = rvec3(0.0, 0.0, 0.0);
 
     rl.set_camera_mode(&camera, raylib::consts::CameraMode::CAMERA_FREE); // Set a free camera mode
 
-    rl.set_target_fps(60);                   // Set our game to run at 60 frames-per-second
-    //--------------------------------------------------------------------------------------
-    // Main game loop
-    return Box::new(move |rl: &mut RaylibHandle, thread: &RaylibThread| -> ()        // Detect window close button or ESC key
+    rl.set_target_fps(60); // Set our game to run at 60 frames-per-second
+                           //--------------------------------------------------------------------------------------
+                           // Main game loop
+    return Box::new(
+        move |rl: &mut RaylibHandle, thread: &RaylibThread| -> ()        // Detect window close button or ESC key
     {
         let _ = texture;
         // Update
@@ -189,5 +198,6 @@ pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut
             d.draw_fps(10, 10);
 
         //----------------------------------------------------------------------------------
-    });
+    },
+    );
 }

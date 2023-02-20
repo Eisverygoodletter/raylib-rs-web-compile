@@ -72,7 +72,7 @@ fn build_with_cmake(src_path: &str) {
     // This seems redundant, but I felt it was needed incase raylib changes it's default
     #[cfg(not(feature = "wayland"))]
     builder.define("USE_WAYLAND", "OFF");
-    
+
     // Scope implementing flags for forcing OpenGL version
     // See all possible flags at https://github.com/raysan5/raylib/wiki/CMake-Build-Options
     {
@@ -243,7 +243,7 @@ fn link(platform: Platform, platform_os: PlatformOS) {
         println!("cargo:rustc-link-lib=brcmEGL");
         println!("cargo:rustc-link-lib=brcmGLESv2");
         println!("cargo:rustc-link-lib=vcos");
-   }
+    }
 
     println!("cargo:rustc-link-lib=static=raylib");
 }
@@ -266,6 +266,15 @@ fn main() {
 
 // cp_raylib copy raylib to an out dir
 fn cp_raylib() -> String {
+    // check if raylib directory is empty (submodule might not be cloned in for whatever reason)
+    let raylib_dir_empty = PathBuf::from("raylib")
+        .read_dir()
+        .expect("read dir call failed when trying to check if raylib submodule was cloned in")
+        .next()
+        .is_none();
+    if raylib_dir_empty {
+        panic!("the raylib submodule is not cloned in.\n Perhaps you need to run\n git submodule update --init\n?");
+    }
     let out = env::var("OUT_DIR").unwrap();
     let out = Path::new(&out); //.join("raylib_source");
 

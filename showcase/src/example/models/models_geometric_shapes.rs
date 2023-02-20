@@ -11,8 +11,7 @@
 
 pub use raylib::prelude::*;
 
-pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut
-{
+pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut {
     // Initialization
     //--------------------------------------------------------------------------------------
     let screen_width = 800;
@@ -23,17 +22,18 @@ pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut
 
     // Define the camera to look into our 3d world
     let mut camera = Camera3D::perspective(
-     rvec3( 0.0, 10.0,10.0 ),
-    rvec3( 0.0, 0.0,0.0 ),
-     rvec3( 0.0, 1.0,0.0 ),
-     45.0,
+        rvec3(0.0, 10.0, 10.0),
+        rvec3(0.0, 0.0, 0.0),
+        rvec3(0.0, 1.0, 0.0),
+        45.0,
     );
 
-    rl.set_target_fps(60);               // Set our game to run at 60 frames-per-second
-    //--------------------------------------------------------------------------------------
+    rl.set_target_fps(60); // Set our game to run at 60 frames-per-second
+                           //--------------------------------------------------------------------------------------
 
     // Main game loop
-    return Box::new(move |rl: &mut RaylibHandle, thread: &RaylibThread| -> ()    // Detect window close button or ESC key
+    return Box::new(
+        move |rl: &mut RaylibHandle, thread: &RaylibThread| -> ()    // Detect window close button or ESC key
     {
         // Update
         //----------------------------------------------------------------------------------
@@ -70,5 +70,6 @@ pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut
 
             d.draw_fps(10, 10);
 
-    });
+    },
+    );
 }

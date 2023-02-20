@@ -17,10 +17,9 @@
 
 use raylib::prelude::*;
 
-
-    //------------------------------------------------------------------------------------
-    // Program main entry point
-    //------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------
+// Program main entry point
+//------------------------------------------------------------------------------------
 pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut {
     // Initialization
     //---------------------------------------------------------------------------------------
@@ -30,22 +29,22 @@ pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut {
     rl.set_window_size(screen_width, screen_height);
     rl.set_window_title(thread, "raygui - portable window");
 
-
     // General variables
     let mut mousePosition = Vector2::default();
-    let  mut windowPosition = rvec2(500, 200);
-    let  mut panOffset = mousePosition;
-    let mut  dragWindow = false;
+    let mut windowPosition = rvec2(500, 200);
+    let mut panOffset = mousePosition;
+    let mut dragWindow = false;
 
     rl.set_window_position(windowPosition.x as i32, windowPosition.y as i32);
 
-    let mut  exitWindow = false;
+    let mut exitWindow = false;
 
     rl.set_target_fps(60);
     //--------------------------------------------------------------------------------------
 
     // Main game loop
-    return Box::new(move |rl: &mut RaylibHandle, thread: &RaylibThread| -> ()  // Detect window close button or ESC key
+    return Box::new(
+        move |rl: &mut RaylibHandle, thread: &RaylibThread| -> ()  // Detect window close button or ESC key
     {
         // Update
         //----------------------------------------------------------------------------------
@@ -86,6 +85,6 @@ pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut {
 
         //----------------------------------------------------------------------------------
  
-    });
-
+    },
+    );
 }

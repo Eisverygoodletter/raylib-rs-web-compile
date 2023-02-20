@@ -21,7 +21,7 @@ pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut {
     rl.set_window_title(thread, "raylib [core] example - 3d camera mode");
 
     // Define the camera to look into our 3d world
-    let  camera = Camera3D::perspective(
+    let camera = Camera3D::perspective(
         rvec3(0.0, 10.0, 10.0), // Camera position
         rvec3(0.0, 0.0, 0.0),   // Camera looking at point
         rvec3(0.0, 1.0, 0.0),   // Camera up vector (rotation towards target)
@@ -64,6 +64,6 @@ pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut {
         d.draw_fps(10, 10);
 
         //----------------------------------------------------------------------------------
-    }
+    },
     );
 }

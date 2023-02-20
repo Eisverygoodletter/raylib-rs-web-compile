@@ -91,6 +91,6 @@ pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut {
             d.draw_text("- Mouse move to look around", 40, 60, 10, Color::DARKGRAY);
 
         //----------------------------------------------------------------------------------
-    }
+    },
     );
 }

@@ -16,18 +16,17 @@
 ********************************************************************************************/
 
 use raylib::prelude::*;
-use std::path::Path;
 use std::fs::File;
 use std::io::prelude::*;
-
+use std::path::Path;
 
 pub fn bytes_to_str(raw: &[u8]) -> &str {
     std::str::from_utf8(raw.split(|b| *b == b'\0').next().unwrap()).expect("not utf-8")
 }
 
-    //------------------------------------------------------------------------------------
-    // Program main entry point
-    //------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------
+// Program main entry point
+//------------------------------------------------------------------------------------
 pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut {
     // Initialization
     //--------------------------------------------------------------------------------------
@@ -37,28 +36,35 @@ pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut {
     rl.set_window_size(screen_width, screen_height);
     rl.set_window_title(thread, "raygui - image exporter");
 
-
     // GUI controls initialization
     //----------------------------------------------------------------------------------
-    let  windowBoxRec  = rrect(screen_width / 2 - 110,  screen_height / 2 - 100,  220,  190);
+    let windowBoxRec = rrect(screen_width / 2 - 110, screen_height / 2 - 100, 220, 190);
     let mut windowBoxActive = false;
 
     let mut fileFormatActive = 0;
-    let  fileFormatTextList = ["IMAGE (.png)", "DATA (.raw)", "CODE (.h)"];
+    let fileFormatTextList = ["IMAGE (.png)", "DATA (.raw)", "CODE (.h)"];
     let displayFileFormatTextList = fileFormatTextList.join(";");
 
     let mut pixelFormatActive = 0;
-    let  pixelFormatTextList = ["GRAYSCALE", "GRAY ALPHA", "R5G6B5", "R8G8B8", "R5G5B5A1", "R4G4B4A4", "R8G8B8A8"];
+    let pixelFormatTextList = [
+        "GRAYSCALE",
+        "GRAY ALPHA",
+        "R5G6B5",
+        "R8G8B8",
+        "R5G5B5A1",
+        "R4G4B4A4",
+        "R8G8B8A8",
+    ];
     let displayPixelFormatTextList = pixelFormatTextList.join(";");
 
     let mut textBoxEditMode = false;
-    let  mut fileName = [0u8; 32];
+    let mut fileName = [0u8; 32];
     fileName[..8].clone_from_slice(b"untitled");
     //--------------------------------------------------------------------------------------
 
     let mut image = Image::gen_image_color(256, 256, Color::BLACK);
-    image.draw_text( "drop image into window", 0, 0, 16, Color::WHITE);
-    let mut  texture = rl.load_texture_from_image(thread, &image).unwrap();
+    image.draw_text("drop image into window", 0, 0, 16, Color::WHITE);
+    let mut texture = rl.load_texture_from_image(thread, &image).unwrap();
 
     let mut imageLoaded = true;
     let mut imageScale = 1.0;
@@ -70,7 +76,8 @@ pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut {
     //--------------------------------------------------------------------------------------
 
     // Main game loop
-    return Box::new(move |rl: &mut RaylibHandle, thread: &RaylibThread| -> () // Detect window close button or ESC key
+    return Box::new(
+        move |rl: &mut RaylibHandle, thread: &RaylibThread| -> () // Detect window close button or ESC key
     {
         let fileNameStr = bytes_to_str(&fileName);
         // Update
@@ -229,5 +236,6 @@ pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut {
 
         //-----------------------------------------------------------------------------
 
-    });
+    },
+    );
 }

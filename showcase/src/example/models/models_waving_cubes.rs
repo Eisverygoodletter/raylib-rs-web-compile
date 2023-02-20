@@ -13,9 +13,7 @@
 
 pub use raylib::prelude::*;
 
-
-pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut
-{
+pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut {
     // Initialization
     //--------------------------------------------------------------------------------------
     let screen_width = 800;
@@ -25,11 +23,11 @@ pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut
     rl.set_window_size(screen_width, screen_height);
 
     // Initialize the camera
-    let mut  camera = Camera3D::perspective(
-     rvec3( 30.0, 20.0,30.0 ),
-     rvec3( 0.0, 0.0,0.0 ),
-    rvec3( 0.0, 1.0,0.0 ),
-    70.0,
+    let mut camera = Camera3D::perspective(
+        rvec3(30.0, 20.0, 30.0),
+        rvec3(0.0, 0.0, 0.0),
+        rvec3(0.0, 1.0, 0.0),
+        70.0,
     );
 
     // Specify the amount of blocks in each direction
@@ -39,7 +37,8 @@ pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut
     //--------------------------------------------------------------------------------------
 
     // Main game loop
-    return Box::new(move |rl: &mut RaylibHandle, thread: &RaylibThread| -> ()    // Detect window close button or ESC key
+    return Box::new(
+        move |rl: &mut RaylibHandle, thread: &RaylibThread| -> ()    // Detect window close button or ESC key
     {
         // Update
         //----------------------------------------------------------------------------------
@@ -103,6 +102,6 @@ pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut
             d.draw_fps(10, 10);
 
         //----------------------------------------------------------------------------------
-    });
-
+    },
+    );
 }

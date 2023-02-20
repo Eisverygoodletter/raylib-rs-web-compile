@@ -9,7 +9,7 @@
 *     - GLTF > Modern text/binary file format, includes lot of information and it could
 *              also reference external files, raylib will try loading mesh and materials data
 *     - IQM > Binary file format including mesh vertex data but also animation data,
-*             raylib can load .iqm animations.  
+*             raylib can load .iqm animations.
 *
 *   This example has been created using raylib 2.6 (www.raylib.com)
 *   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
@@ -21,8 +21,7 @@
 pub use raylib::prelude::*;
 use std::path::Path;
 
-pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut
-{
+pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut {
     // Initialization
     //--------------------------------------------------------------------------------------
     let screen_width = 800;
@@ -33,32 +32,42 @@ pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut
 
     // Define the camera to look into our 3d world
     let mut camera = Camera3D::perspective(
-    rvec3( 50.0, 50.0,50.0 ), // Camera position
-     rvec3( 0.0, 10.0,0.0 ),     // Camera looking at point
-     rvec3( 0.0, 1.0,0.0 ),          // Camera up vector (rotation towards target)
-     45.0,                                // Camera field-of-view Y
+        rvec3(50.0, 50.0, 50.0), // Camera position
+        rvec3(0.0, 10.0, 0.0),   // Camera looking at point
+        rvec3(0.0, 1.0, 0.0),    // Camera up vector (rotation towards target)
+        45.0,                    // Camera field-of-view Y
     );
-    
-    let mut model = rl.load_model(&thread, "original/models/resources/models/castle.obj").unwrap();                 // Load model
-    let mut texture =  rl.load_texture(thread, "original/models/resources/models/castle_diffuse.png").unwrap(); // Load model texture
-    model.materials_mut()[0].maps_mut()[raylib::consts::MaterialMapIndex::MATERIAL_MAP_ALBEDO as usize].texture = *texture.as_ref();                 // Set map diffuse texture
 
-    let position = rvec3( 0.0, 0.0, 0.0 );                // Set model position
- 
-    let mut bounds = model.meshes()[0].mesh_bounding_box();  // Set model bounds
+    let mut model = rl
+        .load_model(&thread, "original/models/resources/models/castle.obj")
+        .unwrap(); // Load model
+    let mut texture = rl
+        .load_texture(
+            thread,
+            "original/models/resources/models/castle_diffuse.png",
+        )
+        .unwrap(); // Load model texture
+    model.materials_mut()[0].maps_mut()
+        [raylib::consts::MaterialMapIndex::MATERIAL_MAP_ALBEDO as usize]
+        .texture = *texture.as_ref(); // Set map diffuse texture
+
+    let position = rvec3(0.0, 0.0, 0.0); // Set model position
+
+    let mut bounds = model.meshes()[0].mesh_bounding_box(); // Set model bounds
 
     // NOTE: bounds are calculated from the original size of the model,
     // if model is scaled on drawing, bounds must be also scaled
 
-    rl.set_camera_mode(&camera, raylib::consts::CameraMode::CAMERA_FREE);     // Set a free camera mode
+    rl.set_camera_mode(&camera, raylib::consts::CameraMode::CAMERA_FREE); // Set a free camera mode
 
-    let mut selected = false;          // Selected object flag
+    let mut selected = false; // Selected object flag
 
-    rl.set_target_fps(60);               // Set our game to run at 60 frames-per-second
-    //--------------------------------------------------------------------------------------
+    rl.set_target_fps(60); // Set our game to run at 60 frames-per-second
+                           //--------------------------------------------------------------------------------------
 
     // Main game loop
-    return Box::new(move |rl: &mut RaylibHandle, thread: &RaylibThread| -> ()    // Detect window close button or ESC key
+    return Box::new(
+        move |rl: &mut RaylibHandle, thread: &RaylibThread| -> ()    // Detect window close button or ESC key
     {
         // Update
         //----------------------------------------------------------------------------------
@@ -132,5 +141,6 @@ pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut
             d.draw_fps(10, 10);
 
         //----------------------------------------------------------------------------------
-    });
+    },
+    );
 }

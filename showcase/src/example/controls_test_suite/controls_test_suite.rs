@@ -8,13 +8,12 @@ pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut {
     // Initialization
     //---------------------------------------------------------------------------------------
     // #[cfg(target_os = "windows")] { // Macos has issues with high DPI
-        let screen_width = 690;
-        let screen_height = 560;
-    
-        rl.set_window_size(screen_width, screen_height);
+    let screen_width = 690;
+    let screen_height = 560;
+
+    rl.set_window_size(screen_width, screen_height);
     // }
     rl.set_window_title(thread, "raygui - controls test suite");
-
 
     // GUI controls initialization
     //----------------------------------------------------------------------------------

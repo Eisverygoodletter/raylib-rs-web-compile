@@ -11,10 +11,9 @@
 
 pub use raylib::prelude::*;
 
-const NUM_MODELS: usize = 8;      // Parametric 3d shapes to generate
+const NUM_MODELS: usize = 8; // Parametric 3d shapes to generate
 
-pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut
-{
+pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut {
     // Initialization
     //--------------------------------------------------------------------------------------
     let screen_width = 800;
@@ -27,39 +26,76 @@ pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut
     let checked = Image::gen_image_checked(2, 2, 1, 1, Color::RED, Color::GREEN);
     let texture = rl.load_texture_from_image(&thread, &checked).unwrap();
 
-
     let mut models = unsafe {
         [
-        rl.load_model_from_mesh(thread, Mesh::gen_mesh_plane(thread, 2.0, 2.0, 5, 5).make_weak()).unwrap(),
-        rl.load_model_from_mesh(thread, Mesh::gen_mesh_cube(thread,2.0, 1.0, 2.0).make_weak()).unwrap(),
-        rl.load_model_from_mesh(thread, Mesh::gen_mesh_sphere(thread,2.0, 32, 32).make_weak()).unwrap(),
-        rl.load_model_from_mesh(thread, Mesh::gen_mesh_hemisphere(thread,2.0, 16, 16).make_weak()).unwrap(),
-        rl.load_model_from_mesh(thread, Mesh::gen_mesh_cylinder(thread,1.0, 2.0, 16).make_weak()).unwrap(),
-        rl.load_model_from_mesh(thread, Mesh::gen_mesh_torus(thread,0.25, 4.0, 16, 32).make_weak()).unwrap(),
-        rl.load_model_from_mesh(thread, Mesh::gen_mesh_knot(thread,1.0, 2.0, 16, 128).make_weak()).unwrap(),
-        rl.load_model_from_mesh(thread, Mesh::gen_mesh_poly(thread,5, 2.0).make_weak()).unwrap(),
-    ]
+            rl.load_model_from_mesh(
+                thread,
+                Mesh::gen_mesh_plane(thread, 2.0, 2.0, 5, 5).make_weak(),
+            )
+            .unwrap(),
+            rl.load_model_from_mesh(
+                thread,
+                Mesh::gen_mesh_cube(thread, 2.0, 1.0, 2.0).make_weak(),
+            )
+            .unwrap(),
+            rl.load_model_from_mesh(
+                thread,
+                Mesh::gen_mesh_sphere(thread, 2.0, 32, 32).make_weak(),
+            )
+            .unwrap(),
+            rl.load_model_from_mesh(
+                thread,
+                Mesh::gen_mesh_hemisphere(thread, 2.0, 16, 16).make_weak(),
+            )
+            .unwrap(),
+            rl.load_model_from_mesh(
+                thread,
+                Mesh::gen_mesh_cylinder(thread, 1.0, 2.0, 16).make_weak(),
+            )
+            .unwrap(),
+            rl.load_model_from_mesh(
+                thread,
+                Mesh::gen_mesh_torus(thread, 0.25, 4.0, 16, 32).make_weak(),
+            )
+            .unwrap(),
+            rl.load_model_from_mesh(
+                thread,
+                Mesh::gen_mesh_knot(thread, 1.0, 2.0, 16, 128).make_weak(),
+            )
+            .unwrap(),
+            rl.load_model_from_mesh(thread, Mesh::gen_mesh_poly(thread, 5, 2.0).make_weak())
+                .unwrap(),
+        ]
     };
 
-
     // Set checked texture as default diffuse component for all models material
-    for model in &mut models  {model.materials_mut()[0].maps_mut()[raylib::consts::MaterialMapIndex::MATERIAL_MAP_ALBEDO as usize].texture = *texture.as_ref();}
+    for model in &mut models {
+        model.materials_mut()[0].maps_mut()
+            [raylib::consts::MaterialMapIndex::MATERIAL_MAP_ALBEDO as usize]
+            .texture = *texture.as_ref();
+    }
 
     // Define the camera to look into our 3d world
-    let mut camera = Camera3D::perspective(rvec3( 5.0, 5.0, 5.0 ), rvec3( 0.0, 0.0, 0.0 ), rvec3( 0.0, 1.0, 0.0 ), 45.0 );
+    let mut camera = Camera3D::perspective(
+        rvec3(5.0, 5.0, 5.0),
+        rvec3(0.0, 0.0, 0.0),
+        rvec3(0.0, 1.0, 0.0),
+        45.0,
+    );
 
     // Model drawing position
-    let position = rvec3( 0.0, 0.0, 0.0 );
+    let position = rvec3(0.0, 0.0, 0.0);
 
     let mut currentModel = 0;
 
-    rl.set_camera_mode(&camera, raylib::consts::CameraMode::CAMERA_ORBITAL);  // Set a orbital camera mode
+    rl.set_camera_mode(&camera, raylib::consts::CameraMode::CAMERA_ORBITAL); // Set a orbital camera mode
 
-    rl.set_target_fps(60);               // Set our game to run at 60 frames-per-second
-    //--------------------------------------------------------------------------------------
+    rl.set_target_fps(60); // Set our game to run at 60 frames-per-second
+                           //--------------------------------------------------------------------------------------
 
     // Main game loop
-    return Box::new(move |rl: &mut RaylibHandle, thread: &RaylibThread| -> ()    // Detect window close button or ESC key
+    return Box::new(
+        move |rl: &mut RaylibHandle, thread: &RaylibThread| -> ()    // Detect window close button or ESC key
     {
         // prevent texture unloading;
         let _ = texture;
@@ -116,5 +152,6 @@ pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut
                 _ => unimplemented!()
             }
 
-    });
+    },
+    );
 }

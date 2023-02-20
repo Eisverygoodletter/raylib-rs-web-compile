@@ -35,7 +35,6 @@ pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut {
 
     // Main game loop
     return Box::new(move |rl: &mut RaylibHandle, thread: &RaylibThread| -> () {
-        
         // Update
         //----------------------------------------------------------------------------------
         audio.update_music_stream(&mut music); // Update music buffer with new stream data

@@ -40,7 +40,6 @@ pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut {
     rl.set_target_fps(60); // Set our game to run at 60 frames-per-second
                            //--------------------------------------------------------------------------------------
 
-
     // Main game loop
     return Box::new(
         move |rl: &mut RaylibHandle, thread: &RaylibThread| -> () // Detect window close button or ESC key
@@ -104,7 +103,6 @@ pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut {
         d.draw_fps(10, 10);
 
         //----------------------------------------------------------------------------------
-    }
+    },
     );
-    
 }

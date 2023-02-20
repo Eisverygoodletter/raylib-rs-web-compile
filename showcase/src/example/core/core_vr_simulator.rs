@@ -28,7 +28,6 @@ pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut {
     rl.set_window_size(screen_width, screen_height);
     rl.set_window_title(thread, "raylib [core] example - vr simulator");
 
-
     // VrDeviceInfo hmd = {0}; // VR device parameters (head-mounted-device)
 
     #[allow(non_snake_case)]
@@ -66,36 +65,54 @@ pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut {
 
     let mut config = rl.load_vr_stereo_config(thread, device.clone()); // Set Vr device parameters for stereo rendering
 
-
     // Distortion shader (uses device lens distortion and chroma)
     let mut distortion = rl
         .load_shader(
             thread,
             None,
-            Some(&format!("original/core/resources/distortion{}.fs", GLSL_VERSION)),
+            Some(&format!(
+                "original/core/resources/distortion{}.fs",
+                GLSL_VERSION
+            )),
         )
         .unwrap();
 
-// Update distortion shader with lens and distortion-scale parameters
-distortion.set_shader_value( distortion.get_shader_location( "leftLensCenter"),
-config.leftLensCenter);
-distortion.set_shader_value( distortion.get_shader_location( "rightLensCenter"),
-config.rightLensCenter);
-distortion.set_shader_value( distortion.get_shader_location( "leftScreenCenter"),
-config.leftScreenCenter);
-distortion.set_shader_value( distortion.get_shader_location( "rightScreenCenter"),
-config.rightScreenCenter);
+    // Update distortion shader with lens and distortion-scale parameters
+    distortion.set_shader_value(
+        distortion.get_shader_location("leftLensCenter"),
+        config.leftLensCenter,
+    );
+    distortion.set_shader_value(
+        distortion.get_shader_location("rightLensCenter"),
+        config.rightLensCenter,
+    );
+    distortion.set_shader_value(
+        distortion.get_shader_location("leftScreenCenter"),
+        config.leftScreenCenter,
+    );
+    distortion.set_shader_value(
+        distortion.get_shader_location("rightScreenCenter"),
+        config.rightScreenCenter,
+    );
 
-distortion.set_shader_value( distortion.get_shader_location( "scale"),
-config.scale);
-distortion.set_shader_value( distortion.get_shader_location( "scaleIn"),
-config.scaleIn);
-distortion.set_shader_value( distortion.get_shader_location( "deviceWarpParam"),
-device.lensDistortionValues);
-distortion.set_shader_value( distortion.get_shader_location( "chromaAbParam"),
-device.chromaAbCorrection);
+    distortion.set_shader_value(distortion.get_shader_location("scale"), config.scale);
+    distortion.set_shader_value(distortion.get_shader_location("scaleIn"), config.scaleIn);
+    distortion.set_shader_value(
+        distortion.get_shader_location("deviceWarpParam"),
+        device.lensDistortionValues,
+    );
+    distortion.set_shader_value(
+        distortion.get_shader_location("chromaAbParam"),
+        device.chromaAbCorrection,
+    );
 
-        let mut target = rl.load_render_texture(thread, rl.get_screen_width() as u32, rl.get_screen_height() as u32).expect("couldn't make render texture");
+    let mut target = rl
+        .load_render_texture(
+            thread,
+            rl.get_screen_width() as u32,
+            rl.get_screen_height() as u32,
+        )
+        .expect("couldn't make render texture");
 
     // Define the camera to look into our 3d world
     let mut camera = Camera3D::perspective(
@@ -106,7 +123,6 @@ device.chromaAbCorrection);
     ); // Camera type
 
     let cube_position = Vector3::zero();
-
 
     rl.set_camera_mode(&camera, raylib::consts::CameraMode::CAMERA_FIRST_PERSON); // Set first person camera mode
 
@@ -149,6 +165,6 @@ device.chromaAbCorrection);
         }
 
         d.draw_fps(10, 10);
-    }
+    },
     );
 }

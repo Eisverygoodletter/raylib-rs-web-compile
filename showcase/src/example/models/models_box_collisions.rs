@@ -11,8 +11,7 @@
 
 pub use raylib::prelude::*;
 
-pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut
-{
+pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut {
     // Initialization
     //--------------------------------------------------------------------------------------
     let screen_width = 800;
@@ -22,25 +21,31 @@ pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut
     rl.set_window_size(screen_width, screen_height);
 
     // Define the camera to look into our 3d world
-    let mut camera = Camera::perspective( rvec3( 0.0, 10.0, 10.0 ), rvec3( 0.0, 0.0, 0.0 ), rvec3( 0.0, 1.0, 0.0 ), 45.0 );
+    let mut camera = Camera::perspective(
+        rvec3(0.0, 10.0, 10.0),
+        rvec3(0.0, 0.0, 0.0),
+        rvec3(0.0, 1.0, 0.0),
+        45.0,
+    );
 
-    let mut playerPosition = rvec3( 0.0, 1.0, 2.0 );
-    let playerSize = rvec3( 1.0, 2.0, 1.0 );
+    let mut playerPosition = rvec3(0.0, 1.0, 2.0);
+    let playerSize = rvec3(1.0, 2.0, 1.0);
     let mut playerColor = Color::GREEN;
 
-    let enemyBoxPos = rvec3( -4.0, 1.0, 0.0 );
-    let enemyBoxSize = rvec3( 2.0, 2.0, 2.0 );
+    let enemyBoxPos = rvec3(-4.0, 1.0, 0.0);
+    let enemyBoxSize = rvec3(2.0, 2.0, 2.0);
 
-    let enemySpherePos = rvec3( 4.0, 0.0, 0.0 );
+    let enemySpherePos = rvec3(4.0, 0.0, 0.0);
     let enemySphereSize = 1.5;
 
     let mut collision = false;
 
-    rl.set_target_fps(60);               // Set our game to run at 60 frames-per-second
-    //--------------------------------------------------------------------------------------
+    rl.set_target_fps(60); // Set our game to run at 60 frames-per-second
+                           //--------------------------------------------------------------------------------------
 
     // Main game loop
-    return Box::new(move |rl: &mut RaylibHandle, thread: &RaylibThread| -> ()    // Detect window close button or ESC key
+    return Box::new(
+        move |rl: &mut RaylibHandle, thread: &RaylibThread| -> ()    // Detect window close button or ESC key
     {
         // Update
         //----------------------------------------------------------------------------------
@@ -111,5 +116,6 @@ pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut
             d.draw_fps(10, 10);
 
         //----------------------------------------------------------------------------------
-    });
+    },
+    );
 }

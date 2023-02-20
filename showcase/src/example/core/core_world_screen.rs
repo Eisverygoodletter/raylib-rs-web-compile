@@ -28,7 +28,7 @@ pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut {
         45.0,
     );
 
-    let  cube_position = Vector3::zero();
+    let cube_position = Vector3::zero();
     let mut cube_screen_position = rvec2(0.0, 0.0);
 
     rl.set_camera_mode(&camera, raylib::consts::CameraMode::CAMERA_FREE); // Set a free camera mode

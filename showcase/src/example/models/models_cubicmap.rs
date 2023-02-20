@@ -32,7 +32,7 @@ pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut {
     );
 
     let image = Image::load_image("original/models/resources/cubicmap.png").unwrap(); // Load cubicmap image (RAM)
-    let cubicmap =  rl.load_texture_from_image(thread, &image).unwrap(); // Convert image to texture to display (VRAM)
+    let cubicmap = rl.load_texture_from_image(thread, &image).unwrap(); // Convert image to texture to display (VRAM)
 
     // Because model depends on mesh, we have to make sure mesh lives as long as the model. We make it weak
     // to manually control it's lifespan.
@@ -42,12 +42,12 @@ pub fn run(rl: &mut RaylibHandle, thread: &RaylibThread) -> crate::SampleOut {
     // NOTE: By default each cube is mapped to one part of texture atlas
     // make texture weak so it lives as long as the model
     let texture = unsafe {
-        rl
-            .load_texture(thread, "original/models/resources/cubicmap_atlas.png")
-            .unwrap().make_weak() // Load map texture
-            
-        }; 
-        model.materials_mut()[0].maps_mut()[raylib::consts::MaterialMapIndex::MATERIAL_MAP_ALBEDO as usize]
+        rl.load_texture(thread, "original/models/resources/cubicmap_atlas.png")
+            .unwrap()
+            .make_weak() // Load map texture
+    };
+    model.materials_mut()[0].maps_mut()
+        [raylib::consts::MaterialMapIndex::MATERIAL_MAP_ALBEDO as usize]
         .texture = *texture.as_ref(); // Set map diffuse texture
     let mapPosition = rvec3(-16.0, 0.0, -8.0); // Set model position
 
